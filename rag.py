@@ -98,6 +98,20 @@ def search_chunks(user_id, query_embedding, limit=5):
     
     return top_results
 
+@app.route('/', methods=['GET'])
+def index():
+    """Root endpoint for the API."""
+    return jsonify({
+        "message": "Medical Records RAG API is running",
+        "status": "online",
+        "endpoints": [
+            "/process_record",
+            "/query_records",
+            "/debug/chunks",
+            "/debug/add_sample_data"
+        ]
+    })
+
 @app.route('/process_record', methods=['POST'])
 def process_record():
     """Process a medical record and store embeddings."""
@@ -304,20 +318,19 @@ if __name__ == '__main__':
         # Sample medical records
         sample_records = [
             {
-    "recordId": "sample_record_2",
-    "title": "Outpatient Rheumatology Summary",
-    "description": "Patient is a 56-year-old female with a known case of systemic lupus erythematosus and scleroderma overlap with interstitial lung disease on medication. Presenting with tightness of skin on the fists and ulcers on the pulp of the fingers. Treatment includes multiple medications such as Linezolid, Clopidogrel, Amlodipine, Domperidone, Omeprazole, Bosentan, Sildenafil Citrate, Prednisolone, Mycophenolate Mofetil, L-methylfolate calcium, and Ciprofloxacin. Review advised after 4 weeks.",
-    "recordType": "Rheumatology Outpatient Summary",
-    "recordDate": "2021-07-02",
-    "patientName": "Ms Rukhsana Shaheen",
-    "hospitalNo": "MH005990453",
-    "episodeNo": "03000582270",
-    "doctor": "Dr Darshan Singh Bhakuni",
-    "department": "Rheumatology MHD",
-    "ageSex": "56 yrs/Female",
-    "consultationType": "Video consultation",
-    
-},
+                "recordId": "sample_record_2",
+                "title": "Outpatient Rheumatology Summary",
+                "description": "Patient is a 56-year-old female with a known case of systemic lupus erythematosus and scleroderma overlap with interstitial lung disease on medication. Presenting with tightness of skin on the fists and ulcers on the pulp of the fingers. Treatment includes multiple medications such as Linezolid, Clopidogrel, Amlodipine, Domperidone, Omeprazole, Bosentan, Sildenafil Citrate, Prednisolone, Mycophenolate Mofetil, L-methylfolate calcium, and Ciprofloxacin. Review advised after 4 weeks.",
+                "recordType": "Rheumatology Outpatient Summary",
+                "recordDate": "2021-07-02",
+                "patientName": "Ms Rukhsana Shaheen",
+                "hospitalNo": "MH005990453",
+                "episodeNo": "03000582270",
+                "doctor": "Dr Darshan Singh Bhakuni",
+                "department": "Rheumatology MHD",
+                "ageSex": "56 yrs/Female",
+                "consultationType": "Video consultation",
+            },
 
             {
                 "recordId": "sample_record_1",
@@ -328,7 +341,6 @@ if __name__ == '__main__':
                 "doctor_name": "Dr Darshan Singh Bhakuni",
                 "hospital_name": "Medanta Hospital",
                 "hospital_no": "MH005990453",
-            
             },
             {
                 "recordId": "sample_record_2",
@@ -339,7 +351,6 @@ if __name__ == '__main__':
                 "doctor_name": "Dr Darshan Singh Bhakuni",
                 "hospital_name": "Medanta Hospital",
                 "hospital_no": "MH005990453",
-            
             },
             {
                 "recordId": "sample_record_3",
@@ -401,9 +412,6 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"Error adding sample data: {str(e)}")
     
- 
-
-if __name__ == "__main__":
+    # Start the server
     port = int(os.environ.get("PORT", 5000))  # Use Render's assigned port or default to 5000
     app.run(host="0.0.0.0", port=port, debug=True)
-
